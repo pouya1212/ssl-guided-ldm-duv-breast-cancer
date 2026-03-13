@@ -31,8 +31,8 @@ Pipeline:
 2. Guide latent diffusion model with semantic embeddings
 3. Generate synthetic DUV patches
 4. Train Vision Transformer classifier using real + synthetic data
-5. Aggregate patch predictions for WSI-level classification
-
+5. Evaluate the finetuned model on the patches of the DUV WSI Test sample
+6. Aggregate patch predictions to classify the test DUV WSI 
 ---
 
 ## Installation
