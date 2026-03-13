@@ -15,14 +15,13 @@ Georgia State University, Marquette University, Medical College of Wisconsin
 
 ## Overview
 
-Breast-Conserving Surgery (BCS) requires accurate intraoperative margin assessment to ensure complete tumor removal while preserving healthy tissue.
+Breast-Conserving Surgery (BCS) requires precise intraoperative margin assessment to preserve healthy tissue. Deep Ultraviolet Fluorescence Scanning Microscopy (DUV-FSM) offers rapid, high-resolution surface imaging for this purpose; however, the scarcity of annotated DUV data hinders the training of robust deep learning models.  
 
-Deep Ultraviolet Fluorescence Scanning Microscopy (DUV-FSM) provides rapid, high-resolution surface imaging. However, training deep learning models is challenging due to the limited availability of annotated data.
+To address this, we propose a **Self-Supervised Learning (SSL)-guided Latent Diffusion Model (LDM)** to generate high-quality synthetic training patches. By guiding the LDM with embeddings from a fine-tuned DINO teacher, we inject rich semantic details of cellular structures into the synthetic data. We combine real and synthetic patches to fine-tune a Vision Transformer (ViT), using patch-prediction aggregation for WSI-level classification.  
 
-We propose a **Self-Supervised Learning (SSL)-guided Latent Diffusion Model (LDM)** that generates realistic synthetic DUV patches using semantic representations extracted from DINO.
+Experiments using 5-fold cross-validation demonstrate that our method achieves **96.47% accuracy** and reduces the **FID score to 45.72**, significantly outperforming class-conditioned baselines.
 
-The generated synthetic data improves Vision Transformer (ViT) classification performance.
-
+> **Conference Acceptance:** This paper has been accepted for the **IEEE International Symposium on Biomedical Imaging (ISBI) 2026**, London, UK, and will be presented in the corresponding session.
 ---
 
 ## Method Overview
