@@ -8,7 +8,8 @@ from sklearn.metrics import confusion_matrix
 
 
 class AverageMeter:
-    """Computes and stores the average and current value"""
+    """Computes and stores the average and current value."""
+
     def __init__(self):
         """Initialize the meter and reset all values."""
         self.val = 0
@@ -35,20 +36,35 @@ class AverageMeter:
 def simple_accuracy(preds, labels):
     """
     Computes simple accuracy by comparing predictions to labels.
-    Gives the fraction of correct predictions out of the total.
+    
+    Returns:
+        float: The fraction of correct predictions.
     """
     return (preds == labels).mean()
 
 
 def compute_wsi_metrics(y_true, y_pred):
     """
-    Computes WSI-level metrics including Accuracy, Sensitivity, 
-    Specificity, Precision, and F1-score.
+    Computes WSI-level metrics: Accuracy, Sensitivity, Specificity, Precision, and F1.
+
+    Args:
+        y_true (array-like): Ground truth labels.
+        y_pred (array-like): Predicted labels.
+
+    Returns:
+        tuple: (accuracy, sensitivity, specificity, precision, f1_score)
     """
+    y_true = np.array(y_true)
+    y_pred = np.array(y_pred)
+    
+    # Ensure confusion matrix is always 2x2 for binary classification
     tn, fp, fn, tp = confusion_matrix(y_true, y_pred, labels=[0, 1]).ravel()
-    acc = np.mean(np.array(y_true) == np.array(y_pred))
+    
+    acc = (tp + tn) / (tp + tn + fp + fn) if (tp + tn + fp + fn) > 0 else 0
     sens = tp / (tp + fn) if (tp + fn) > 0 else 0
     spec = tn / (tn + fp) if (tn + fp) > 0 else 0
     prec = tp / (tp + fp) if (tp + fp) > 0 else 0
-    f1 = 2 * prec * sens / (prec + sens) if (prec + sens) > 0 else 0
-    return acc, sens, spec, prec, f1
+    
+    f1_score = (2 * prec * sens / (prec + sens)) if (prec + sens) > 0 else 0
+    
+    return acc, sens, spec, prec, f1_score
