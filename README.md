@@ -1,6 +1,6 @@
 # Self-Learned Representation-Guided Latent Diffusion Model for Breast Cancer Classification in Deep Ultraviolet Whole Surface Images
 
-Official implementation of our paper:
+Official implementation of the paper:
 
 **"Self-Learned Representation-Guided Latent Diffusion Model for Breast Cancer Classification in Deep Ultraviolet Whole Surface Images"**
 
