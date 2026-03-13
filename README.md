@@ -76,7 +76,7 @@ The SSL embeddings and synthetic patch generation were obtained by following the
 
 Clone the repository:
 
-git clone https://github.com/pouya12/ssl-guided-ldm-duv-breast-cancer.git
+git clone https://github.com/pouya12/ssl-guided-ldm-duv-breast-cancer
 cd ssl-guided-ldm-duv-breast-cancer
 
 Install required dependencies:
