@@ -6,6 +6,14 @@ Official implementation of the paper:
 
 📄 Paper: [Link to Paper](https://www.researchgate.net/publication/399875627_Self-learned_representation-guided_latent_diffusion_model_for_breast_cancer_classification_in_deep_ultraviolet_whole_surface_images)
 
+Currently, the other related code repository from our group is available at:
+
+https://github.com/Yatagarasu50469/RANDS
+
+In addition, we are sharing earlier versions of Dataset 1 through Hugging Face:
+
+https://huggingface.co/datasets/BLISS-MU/DDSM
+
 ## Authors
 
 **Pouya Afshin, David Helminiak, Tianling Niu, Julie M. Jorns, Tina Yen, Bing Yu, Dong Hye Ye**
