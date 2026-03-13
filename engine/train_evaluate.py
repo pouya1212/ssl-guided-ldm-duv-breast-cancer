@@ -19,6 +19,7 @@ from apex.parallel import DistributedDataParallel as DDP
 from utils.metrics import AverageMeter, simple_accuracy
 from utils.scheduler import WarmupLinearSchedule, WarmupCosineSchedule
 from utils.dist_util import get_world_size
+import logging
 
 # Setup logger
 logging.basicConfig(level=logging.INFO)
