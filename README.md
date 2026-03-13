@@ -71,6 +71,7 @@ The original implementation was modified to support loading pretrained models tr
 
 If you find this work useful, please cite:
 
+```bibtex
 @misc{afshin2026selflearnedrepresentationguidedlatentdiffusion,
       title={Self-learned representation-guided latent diffusion model for breast cancer classification in deep ultraviolet whole surface images}, 
       author={Pouya Afshin and David Helminiak and Tianling Niu and Julie M. Jorns and Tina Yen and Bing Yu and Dong Hye Ye},
