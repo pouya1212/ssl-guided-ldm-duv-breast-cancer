@@ -25,14 +25,6 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-def set_seed(args):
-    """Set seed for reproducibility."""
-    import random
-    random.seed(args.seed)
-    np.random.seed(args.seed)
-    torch.manual_seed(args.seed)
-    if args.n_gpu > 0:
-        torch.cuda.manual_seed_all(args.seed)
 
 def save_model(args, model, fold):
     """Save model checkpoint."""
