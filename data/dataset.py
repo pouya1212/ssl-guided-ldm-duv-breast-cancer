@@ -155,27 +155,6 @@ class Tumor_Image_Patch_Dataset(Dataset):
         """Return the number of samples in the dataset."""
         return len(self.metadata)
     
-patch_csv_weights1 = '/data/users4/pafshin1/My_Projects/DATA1/Dataset_1-matched-breast-corrected/INPUT_PATCHES/Updated_metadata_patches.csv'
-patch_dir1 = '/data/users4/pafshin1/My_Projects/DATA1/Dataset_1-matched-breast-corrected/INPUT_PATCHES'
-
-
-patchdataset1 = TumorImageDataset(
-            csv_file=patch_csv_weights1,
-            root_dir=patch_dir1,
-            resize_size=(224, 224), transform=True)
-    
-    
-patch_csv_weights2 = '/data/users4/pafshin1/My_Projects/DATA2/Dataset_2-matched-breast-corrected/INPUT_PATCHES/Updated_metadata_patches.csv'
-patch_dir2 = '/data/users4/pafshin1/My_Projects/DATA2/Dataset_2-matched-breast-corrected/INPUT_PATCHES'
-patchdataset2 = Tumor_Image_Patch_Dataset(
-            csv_file=patch_csv_weights2,
-            root_dir=patch_dir2,
-            resize_size=(224, 224), transform=True)
-
-meta1 = pd.read_csv(patch_csv_weights1)
-meta2 =  pd.read_csv(patch_csv_weights2)
-
-
 
 class SyntheticTumorImageDataset(Dataset):
     def __init__(
@@ -262,8 +241,4 @@ class SyntheticTumorImageDataset(Dataset):
         )
 
 
-synthetic_both_classes = SyntheticTumorImageDataset(
-    benign_dir="/data/users4/pafshin1/Diffusion Models/Large-Image-Diffusion/Output_Synthesis_Best/Benign/Benign_ssl_vq_4_eta_0.0_scale_2.0_combined",
-    malignant_dir="/data/users4/pafshin1/Diffusion Models/Large-Image-Diffusion/Output_Synthesis_Best/Malignant/Malignant_ssl_vq_4_eta_0.0_scale_2.0_combined",
-    mode="both"
-)   
+
