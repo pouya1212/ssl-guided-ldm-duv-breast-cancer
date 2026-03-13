@@ -38,7 +38,7 @@ Pipeline:
 6. Aggregate patch predictions to classify the test DUV WSI 
 ---
 ## Comparison of Real vs SSL-Guided Synthetic Patches
-![Real vs Synthetic Patches](figures/Real_vs_Synthetic.png)
+![Real vs Synthetic Patches](figures/system.png)
 
 Based on the results, the synthetic patches **capture realistic fine-grained morphological details** present in the real patches, including structures characteristic of **benign and cancerous tissues**. This demonstrates that the SSL-guided LDM effectively preserves important cellular and tissue-level features in the generated data.
 
