@@ -53,10 +53,18 @@ Install required dependencies:
 pip install -r requirements.txt
 
 ---
-## Dataset
-Due to patient privacy and medical data regulations, the DUV-FSM dataset used in this work cannot be publicly released.
 
-Researchers interested in the dataset may contact the Medical College of Wisconsin for potential access.
+## Dataset
+
+The dataset includes **142 DUV WSIs** (58 benign, 84 malignant) collected from the **Medical College of Wisconsin**.  
+A total of **172,984 non-overlapping 400×400 patches** were extracted:
+
+- 48,619 malignant patches  
+- 124,365 benign patches  
+
+Patch labels were obtained from pathologist annotations.
+
+> **Note:  Researchers interested in accessing the dataset may contact the Medical College of Wisconsin  and Marquette University for potential collaboration or data sharing.
 ---
 ## Acknowledgements
 
