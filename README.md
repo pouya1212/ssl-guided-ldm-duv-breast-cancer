@@ -10,7 +10,8 @@ Official implementation of the paper:
 Pouya Afshin, David Helminiak, Tianling Niu, Julie M. Jorns, Tina Yen, Bing Yu, Dong Hye Ye
 
 Georgia State University, Marquette University, Medical College of Wisconsin
-![Universities](figures/Universities.png)
+
+![Universities](figures/Univerisities.png)
 ---
 
 ## Overview
