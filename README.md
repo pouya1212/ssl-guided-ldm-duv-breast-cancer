@@ -17,7 +17,7 @@ Georgia State University, Marquette University, Medical College of Wisconsin
 
 Breast-Conserving Surgery (BCS) requires precise intraoperative margin assessment to preserve healthy tissue. Deep Ultraviolet Fluorescence Scanning Microscopy (DUV-FSM) offers rapid, high-resolution surface imaging for this purpose; however, the scarcity of annotated DUV data hinders the training of robust deep learning models.  
 
-To address this, we propose a **Self-Supervised Learning (SSL)-guided Latent Diffusion Model (LDM)** to generate high-quality synthetic training patches. By guiding the LDM with embeddings from a fine-tuned DINO teacher, we inject rich semantic details of cellular structures into the synthetic data. We combine real and synthetic patches to fine-tune a Vision Transformer (ViT), using patch-prediction aggregation for WSI-level classification.  
+To address this, we propose a **Self-Supervised Learning (SSL)-guided Latent Diffusion Model (LDM)** to generate high-quality synthetic training patches. By guiding the LDM with embeddings from a fine-tuned DINO teacher, we inject rich semantic details of cellular structures into the synthetic data. We combine real and synthetic patches to fine-tune a Vision Transformer (ViT) and use patch-prediction aggregation for WSI-level classification.  
 
 Experiments using 5-fold cross-validation demonstrate that our method achieves **96.47% accuracy** and reduces the **FID score to 45.72**, significantly outperforming class-conditioned baselines.
 
@@ -52,7 +52,7 @@ The SSL embeddings and synthetic patch generation were obtained by following the
    After finetuning, use the teacher network to **extract embeddings for each patch**.
 
 2. **Latent Diffusion Model (LDM) Pretraining**  
-   Follow the official instructions from the LDM repository [https://github.com/CompVis/latent-diffusion]to obtain **pretrained models** and guidance for training and evaluating the LDM and VAE.
+   Follow the official instructions from the LDM repository [https://github.com/CompVis/latent-diffusion] to obtain **pretrained models** and guidance for training and evaluating the LDM and VAE.
 
 3. **Variational Autoencoder (VAE)**  
    Use the recommended VAE from [cvlab-stonybrook/PathLDM](https://github.com/cvlab-stonybrook/PathLDM) to encode the patch representations.
