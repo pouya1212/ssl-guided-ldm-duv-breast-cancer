@@ -1,3 +1,5 @@
+# this is an example of how to make a dataset to train LDM using patch embeddings 
+
 from pathlib import Path
 import h5py
 import numpy as np
