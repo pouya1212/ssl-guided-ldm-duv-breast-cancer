@@ -1,6 +1,7 @@
 # Self-Learned Representation-Guided Latent Diffusion Model for Breast Cancer Classification in Deep Ultraviolet Whole Surface Images
 
-Official implementation of our paper on improving breast cancer classification in Deep Ultraviolet Fluorescence Scanning Microscopy (DUV-FSM) images using self-supervised representation-guided latent diffusion models.
+Official implementation of our paper on SELF-LEARNED REPRESENTATION-GUIDED LATENT DIFFUSION MODEL FOR BREAST
+CANCER CLASSIFICATION IN DEEP ULTRAVIOLET WHOLE SURFACE IMAGES.
 
 ## Authors
 Pouya Afshin, David Helminiak, Tianling Niu, Julie M. Jorns, Tina Yen, Bing Yu, Dong Hye Ye
