@@ -7,9 +7,10 @@ Official implementation of the paper:
 📄 Paper: [Link to Paper](https://www.researchgate.net/publication/399875627_Self-learned_representation-guided_latent_diffusion_model_for_breast_cancer_classification_in_deep_ultraviolet_whole_surface_images)
 
 ## Authors
-Pouya Afshin, David Helminiak, Tianling Niu, Julie M. Jorns, Tina Yen, Bing Yu, Dong Hye Ye
 
-Georgia State University, Marquette University, Medical College of Wisconsin
+**Pouya Afshin, David Helminiak, Tianling Niu, Julie M. Jorns, Tina Yen, Bing Yu, Dong Hye Ye**
+
+Affiliations: Georgia State University, Marquette University, Medical College of Wisconsin
 
 ![Universities](figures/Univerisities.png)
 ---
