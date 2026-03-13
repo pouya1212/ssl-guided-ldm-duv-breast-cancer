@@ -108,15 +108,11 @@ def valid(args, model, writer, val_loader, global_step):
             eval_losses.update(eval_loss.item()) 
             preds = torch.argmax(logits, dim=-1) 
         if len(all_preds) == 0:
-            all_preds.append(preds.detach().cpu().numpy()) 
-                                                          
+            all_preds.append(preds.detach().cpu().numpy())
             all_label.append(labels.detach().cpu().numpy())
         else:
-            all_preds[0] = np.append(
-                all_preds[0], preds.detach().cpu().numpy(), axis=0 
-            ) 
-                all_label[0], labels.detach().cpu().numpy(), axis=0
-            )
+            all_preds[0] = np.append(all_preds[0], preds.detach().cpu().numpy(), axis=0)
+            all_label[0] = np.append(all_label[0], labels.detach().cpu().numpy(), axis=0)
         epoch_iterator.set_description("Validating... (loss=%2.5f)" % eval_losses.val)
 
     all_preds, all_label = all_preds[0], all_label[0]
