@@ -77,10 +77,10 @@ pip install -r requirements.txt
 ## Dataset
 
 The dataset includes **142 DUV WSIs** (58 benign, 84 malignant) collected from the **Medical College of Wisconsin**. 
-![Real vs Synthetic Patches](figures/WSIs.png)
+![WSIs](figures/WSIs.png)
 
 A total of **172,984 non-overlapping 400×400 patches** were extracted:
-![Real vs Synthetic Patches](figures/Patchess.png)
+![Real Patches](figures/Patches.png)
 
 - 48,619 malignant patches  
 - 124,365 benign patches  
