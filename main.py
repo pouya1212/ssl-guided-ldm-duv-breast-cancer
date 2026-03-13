@@ -74,7 +74,7 @@ def set_seed(args):
         torch.cuda.manual_seed_all(args.seed)
 
 ############################################################################################################################
-# function for keep track of taining loss, etc
+# function for keeping track of training loss, etc
 def save_plots_for_fold(fold, output_dir, train_losses, train_epoch_losses, val_losses, val_accuracies):
     """
     Save the training and validation loss/accuracy plots for each fold.
@@ -225,10 +225,10 @@ def summarize(metric_list, name, method, f):
 #################################################################################################################################
 # define a main function, including all args, which:
 # 1) applies n-fold cross-validation, saves the Train, val loss, and accuracy along with test accuracy
-# 2) It will take the mean and standard_deviation of the different folds' accuracy
+# 2) It will take the mean and standard deviation of the different folds' accuracy
 # 3) It will capture the patches' information for each fold, such as the name of the WSI image, the patch name, the index, and its coordinate
 # 4) It will then use this information to compute majority voting accuracy for the WSI image and compare the prediction with the label of the WSI image.    
-# 5) It will generate a box plot on the WSI image using the prediction of wsi' patches 
+# 5) It will generate a box plot on the WSI image using the prediction of the WSI's patches 
 
    
 def main():
