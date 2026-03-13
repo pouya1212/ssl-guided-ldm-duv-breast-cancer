@@ -1,23 +1,8 @@
 # coding=utf-8
-# Copyright 2020 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-# Lint as: python3
 """Bottleneck ResNet v2 with GroupNorm and Weight Standardization."""
 
-from os.path import join as pjoin
 from collections import OrderedDict
+from os.path import join as pjoin
 
 import torch
 from torch import nn
@@ -31,15 +16,16 @@ def np2th(weights, conv=False):
     return torch.from_numpy(weights)
 
 
+# pylint: disable=too-few-public-methods
 class StdConv2d(nn.Conv2d):
     """Conv2d layer with Weight Standardization."""
 
     def forward(self, x):
         """Forward pass with weight standardization."""
-        w = self.weight
-        v, m = torch.var_mean(w, dim=[1, 2, 3], keepdim=True, unbiased=False)
-        w = (w - m) / torch.sqrt(v + 1e-5)
-        return F.conv2d(x, w, self.bias, self.stride, self.padding,
+        weight = self.weight
+        var, mean = torch.var_mean(weight, dim=[1, 2, 3], keepdim=True, unbiased=False)
+        weight = (weight - mean) / torch.sqrt(var + 1e-5)
+        return F.conv2d(x, weight, self.bias, self.stride, self.padding,
                         self.dilation, self.groups)
 
 
@@ -56,8 +42,7 @@ def conv1x1(cin, cout, stride=1, bias=False):
 
 
 class PreActBottleneck(nn.Module):
-    """Pre-activation (v2) bottleneck block.
-    """
+    """Pre-activation (v2) bottleneck block."""
 
     def __init__(self, cin, cout=None, cmid=None, stride=1):
         """Initialize the Pre-activation Bottleneck block."""
@@ -73,64 +58,45 @@ class PreActBottleneck(nn.Module):
         self.conv3 = conv1x1(cmid, cout, bias=False)
         self.relu = nn.ReLU(inplace=True)
 
+        self.downsample = None
         if stride != 1 or cin != cout:
-            # Projection also with pre-activation according to paper.
             self.downsample = conv1x1(cin, cout, stride, bias=False)
             self.gn_proj = nn.GroupNorm(cout, cout)
 
     def forward(self, x):
         """Forward pass for the bottleneck block."""
-        # Residual branch
         residual = x
-        if hasattr(self, 'downsample'):
-            residual = self.downsample(x)
-            residual = self.gn_proj(residual)
+        if self.downsample is not None:
+            residual = self.gn_proj(self.downsample(x))
 
-        # Unit's branch
         y = self.relu(self.gn1(self.conv1(x)))
         y = self.relu(self.gn2(self.conv2(y)))
         y = self.gn3(self.conv3(y))
 
-        y = self.relu(residual + y)
-        return y
+        return self.relu(residual + y)
 
     def load_from(self, weights, n_block, n_unit):
         """Load weights from a numpy dictionary."""
         # pylint: disable=too-many-locals
-        conv1_weight = np2th(weights[pjoin(n_block, n_unit, "conv1/kernel")], conv=True)
-        conv2_weight = np2th(weights[pjoin(n_block, n_unit, "conv2/kernel")], conv=True)
-        conv3_weight = np2th(weights[pjoin(n_block, n_unit, "conv3/kernel")], conv=True)
+        unit_path = pjoin(n_block, n_unit)
+        
+        with torch.no_grad():
+            self.conv1.weight.copy_(np2th(weights[pjoin(unit_path, "conv1/kernel")], True))
+            self.conv2.weight.copy_(np2th(weights[pjoin(unit_path, "conv2/kernel")], True))
+            self.conv3.weight.copy_(np2th(weights[pjoin(unit_path, "conv3/kernel")], True))
 
-        gn1_weight = np2th(weights[pjoin(n_block, n_unit, "gn1/scale")])
-        gn1_bias = np2th(weights[pjoin(n_block, n_unit, "gn1/bias")])
+            self.gn1.weight.copy_(np2th(weights[pjoin(unit_path, "gn1/scale")]).view(-1))
+            self.gn1.bias.copy_(np2th(weights[pjoin(unit_path, "gn1/bias")]).view(-1))
+            self.gn2.weight.copy_(np2th(weights[pjoin(unit_path, "gn2/scale")]).view(-1))
+            self.gn2.bias.copy_(np2th(weights[pjoin(unit_path, "gn2/bias")]).view(-1))
+            self.gn3.weight.copy_(np2th(weights[pjoin(unit_path, "gn3/scale")]).view(-1))
+            self.gn3.bias.copy_(np2th(weights[pjoin(unit_path, "gn3/bias")]).view(-1))
 
-        gn2_weight = np2th(weights[pjoin(n_block, n_unit, "gn2/scale")])
-        gn2_bias = np2th(weights[pjoin(n_block, n_unit, "gn2/bias")])
-
-        gn3_weight = np2th(weights[pjoin(n_block, n_unit, "gn3/scale")])
-        gn3_bias = np2th(weights[pjoin(n_block, n_unit, "gn3/bias")])
-
-        self.conv1.weight.copy_(conv1_weight)
-        self.conv2.weight.copy_(conv2_weight)
-        self.conv3.weight.copy_(conv3_weight)
-
-        self.gn1.weight.copy_(gn1_weight.view(-1))
-        self.gn1.bias.copy_(gn1_bias.view(-1))
-
-        self.gn2.weight.copy_(gn2_weight.view(-1))
-        self.gn2.bias.copy_(gn2_bias.view(-1))
-
-        self.gn3.weight.copy_(gn3_weight.view(-1))
-        self.gn3.bias.copy_(gn3_bias.view(-1))
-
-        if hasattr(self, 'downsample'):
-            proj_conv_weight = np2th(weights[pjoin(n_block, n_unit, "conv_proj/kernel")], conv=True)
-            proj_gn_weight = np2th(weights[pjoin(n_block, n_unit, "gn_proj/scale")])
-            proj_gn_bias = np2th(weights[pjoin(n_block, n_unit, "gn_proj/bias")])
-
-            self.downsample.weight.copy_(proj_conv_weight)
-            self.gn_proj.weight.copy_(proj_gn_weight.view(-1))
-            self.gn_proj.bias.copy_(proj_gn_bias.view(-1))
+            if self.downsample is not None:
+                w_proj = np2th(weights[pjoin(unit_path, "conv_proj/kernel")], True)
+                self.downsample.weight.copy_(w_proj)
+                self.gn_proj.weight.copy_(np2th(weights[pjoin(unit_path, "gn_proj/scale")]).view(-1))
+                self.gn_proj.bias.copy_(np2th(weights[pjoin(unit_path, "gn_proj/bias")]).view(-1))
 
 
 class ResNetV2(nn.Module):
@@ -150,25 +116,19 @@ class ResNetV2(nn.Module):
         ]))
 
         self.body = nn.Sequential(OrderedDict([
-            ('block1', nn.Sequential(OrderedDict(
-                [('unit1', PreActBottleneck(cin=width, cout=width*4, cmid=width))] +
-                [(f'unit{i:d}', PreActBottleneck(cin=width*4, cout=width*4, cmid=width))
-                 for i in range(2, block_units[0] + 1)],
-            ))),
-            ('block2', nn.Sequential(OrderedDict(
-                [('unit1', PreActBottleneck(cin=width*4, cout=width*8, cmid=width*2, stride=2))] +
-                [(f'unit{i:d}', PreActBottleneck(cin=width*8, cout=width*8, cmid=width*2))
-                 for i in range(2, block_units[1] + 1)],
-            ))),
-            ('block3', nn.Sequential(OrderedDict(
-                [('unit1', PreActBottleneck(cin=width*8, cout=width*16, cmid=width*4, stride=2))] +
-                [(f'unit{i:d}', PreActBottleneck(cin=width*16, cout=width*16, cmid=width*4))
-                 for i in range(2, block_units[2] + 1)],
-            ))),
+            ('block1', self._make_block(width, width * 4, width, block_units[0])),
+            ('block2', self._make_block(width * 4, width * 8, width * 2, block_units[1], 2)),
+            ('block3', self._make_block(width * 8, width * 16, width * 4, block_units[2], 2)),
         ]))
+
+    @staticmethod
+    def _make_block(cin, cout, cmid, num_units, stride=1):
+        """Helper to create a sequential block of units."""
+        units = [('unit1', PreActBottleneck(cin, cout, cmid, stride))]
+        for i in range(2, num_units + 1):
+            units.append((f'unit{i}', PreActBottleneck(cout, cout, cmid)))
+        return nn.Sequential(OrderedDict(units))
 
     def forward(self, x):
         """Forward pass for the ResNetV2 model."""
-        x = self.root(x)
-        x = self.body(x)
-        return x
+        return self.body(self.root(x))
