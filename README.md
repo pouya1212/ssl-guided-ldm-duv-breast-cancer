@@ -86,7 +86,7 @@ The dataset includes **142 DUV WSIs** (58 benign, 84 malignant) collected from t
 A total of **172,984 non-overlapping 400×400 patches** were extracted:
 - 48,619 malignant patches  
 - 124,365 benign patches
-- 
+
 ![Real Patches](figures/Patches.png)
 
 Patch labels were obtained from pathologist annotations.
