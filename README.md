@@ -42,7 +42,22 @@ Pipeline:
 
 Based on the results, the synthetic patches **capture realistic fine-grained morphological details** present in the real patches, including structures characteristic of **benign and cancerous tissues**. This demonstrates that the SSL-guided LDM effectively preserves important cellular and tissue-level features in the generated data.
 
+## SSL Embeddings & Synthetic Data Generation
 
+The SSL embeddings and synthetic patch generation were obtained by following these steps:
+
+1. **Self-Supervised Feature Extraction with DINO**  
+   Finetune the dataset using the **DINO framework** from [facebookresearch/dino](https://github.com/facebookresearch/dino) with the parameters described in the paper.  
+   After finetuning, use the teacher network to **extract embeddings for each patch**.
+
+2. **Latent Diffusion Model (LDM) Pretraining**  
+   Follow the official instructions from the LDM repository to obtain **pretrained models** and guidance for training and evaluating the LDM and VAE.
+
+3. **Variational Autoencoder (VAE)**  
+   Use the recommended VAE from [cvlab-stonybrook/PathLDM](https://github.com/cvlab-stonybrook/PathLDM) to encode the patch representations.
+
+4. **Training and Synthetic Patch Generation**  
+   Follow [cvlab-stonybrook/Large-Image-Diffusion](https://github.com/cvlab-stonybrook/Large-Image-Diffusion) for using the embeddings to train the LDM and generate synthetic DUV patches.
 
 
 
