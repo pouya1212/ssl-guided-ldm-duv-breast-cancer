@@ -1,52 +1,53 @@
 # coding=utf-8
+"""
+Main training and evaluation script for SSL-guided LDM-DUV Breast Cancer classification.
+Handles data loading, model configuration, and cross-validation execution.
+"""
 from __future__ import absolute_import, division, print_function
-import time
-import logging
+
+# 1. Standard library imports
 import argparse
+import logging
 import os
 import random
-import numpy as np
-from tqdm import tqdm
-from datetime import timedelta
-import matplotlib.pyplot as plt
-from torchvision import transforms, datasets
-from torch.utils.data import DataLoader, RandomSampler, DistributedSampler, SequentialSampler, ConcatDataset
-import torch.nn.functional as F  # for softmax computation
-
-from torch.utils.data import Dataset, DataLoader, Subset, random_split
-import torch
-import torch.distributed as dist
-import json
-import itertools
-import seaborn as sns
-from itertools import cycle
-
-from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, roc_curve, auc, classification_report
-
-from tqdm import tqdm
-from torch.utils.tensorboard import SummaryWriter
-from apex import amp
-from apex.parallel import DistributedDataParallel as DDP
-import pandas as pd
-from utils.data_utils import folds_generate, get_loader
-from models.model_setup import setup, count_parameters, save_model
-from engine.train_evaluate import train_test, test, valid
-from utils.metrics import AverageMeter, simple_accuracy, compute_wsi_metrics
-# To import the Classes
-from data.dataset import TumorImageDataset, Tumor_Image_Patch_Dataset, SyntheticTumorImageDataset
-# To import the pre-initialized instances and metadata
-from models.modeling import VisionTransformer, CONFIGS
-from utils.scheduler import WarmupLinearSchedule, WarmupCosineSchedule
-# from utils.data_utils import get_loader
-from utils.dist_util import get_world_size
-from PIL import Image
-from collections import defaultdict, Counter  # Import Counter along with defaultdict
-from PIL import Image, ImageDraw
 import re
-from pyfiglet import Figlet
-logger = logging.getLogger(__name__) # The logging module allows you to configure how messages are logged, where they are stored, and how they are formatted.
+from collections import defaultdict, Counter
+from datetime import timedelta
 
-Image.MAX_IMAGE_PIXELS = None  # Disables the decompression bomb check
+# 2. Third-party library imports
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import torch
+from PIL import Image
+from pyfiglet import Figlet
+from sklearn.metrics import (
+    confusion_matrix,
+    ConfusionMatrixDisplay,
+    roc_curve,
+    auc,
+    classification_report
+)
+from torch.utils.data import DataLoader, Subset, ConcatDataset, random_split
+from tqdm import tqdm
+
+# 3. Local application/library specific imports
+from data.dataset import (
+    TumorImageDataset,
+    Tumor_Image_Patch_Dataset,
+    SyntheticTumorImageDataset
+)
+from engine.train_evaluate import train_test, test, valid
+from models.model_setup import setup, count_parameters, save_model
+from models.modeling import VisionTransformer, CONFIGS
+from utils.data_utils import folds_generate, get_loader
+from utils.metrics import AverageMeter, simple_accuracy, compute_wsi_metrics
+from utils.scheduler import WarmupLinearSchedule, WarmupCosineSchedule
+from utils.dist_util import get_world_size
+
+# Initialize logger and global settings
+logger = logging.getLogger(__name__)
+Image.MAX_IMAGE_PIXELS = None
 
 ############################################################################################################################################################
 # dataset class for delivering patches of WSI images along with their names, WSI name, index of patch, and its corresponding coordinates on the WSI image. 
