@@ -1,0 +1,139 @@
+model:
+  base_learning_rate: 2.5e-06
+  target: ldm.models.diffusion.ddpm_ldm.LatentDiffusion
+  params:
+    linear_start: 0.0015
+    linear_end: 0.0195
+    num_timesteps_cond: 1
+    log_every_t: 200
+    timesteps: 1000
+    first_stage_key: image
+    cond_stage_key: class_label
+    image_size: 64
+    channels: 3
+    cond_stage_trainable: true
+    conditioning_key: crossattn
+    monitor: val/loss
+    use_ema: False
+    track_fid: false
+    fid_path: "/data/users4/pafshin1/My_Projects/Combined_Datasets/Combined_Corrected_embedding_fid/Embeddings/FId/real_stats.npz"
+
+    # scheduler_config: please comment this because the model collapses
+    #   target: ldm.lr_scheduler.LambdaLinearScheduler
+    #   params:
+    #     warm_up_steps: [200]
+    #     cycle_lengths: [10000000000000] #There is no decay and learning rate stays constant:
+    #     f_start: [1.e-6]
+    #     f_max: [1.]
+    #     f_min: [1.]
+
+    unet_config:
+      target: ldm.modules.diffusionmodules.openaimodel.UNetModel
+      params:
+        image_size: 64
+        in_channels: 3
+        out_channels: 3
+        model_channels: 192
+        attention_resolutions: [8, 4, 2]
+        num_res_blocks: 2
+        channel_mult: [1, 2, 3, 5]
+        num_heads: 1
+        use_spatial_transformer: True
+        transformer_depth: 1
+        context_dim: 512
+        ckpt_path: "/data/users4/pafshin1/Diffusion\ Models/Latent_diffusion/latent-diffusion/ldm/models/ldm/cin256-v2/model.ckpt"
+
+    first_stage_config:
+      target: ldm.models.autoencoder.VQModelInterface
+      params:
+        ckpt_path: "/data/users4/pafshin1/Diffusion Models/Latent_diffusion/latent-diffusion/logs/2025-10-04T03-12-25_vq_4_Combined_dataset_Corrected/checkpoints/last.ckpt"
+        embed_dim: 3
+        n_embed: 8192
+        ddconfig:
+          double_z: false
+          z_channels: 3
+          resolution: 256
+          in_channels: 3
+          out_ch: 3
+          ch: 128
+          ch_mult:
+          - 1
+          - 2
+          - 4
+          num_res_blocks: 2
+          attn_resolutions: []
+          dropout: 0.0
+        lossconfig:
+          target: torch.nn.Identity
+    cond_stage_config:
+      target: ldm.modules.encoders.modules.ClassEmbedder
+      params:
+        n_classes: 3
+        embed_dim: 512
+        key: class_label
+
+
+
+data:
+  target: main.DataModuleFromConfig
+  params:
+    batch_size: 32
+    num_workers: 4
+    use_worker_init_fn: false
+    shuffle_val_dataloader: false
+    wrap: false
+    train:
+      target: ldm.data.hybrid_cond.tumor_til.CancerDataset2D_Batch_combined
+      params:
+        csv_file: /data/users4/pafshin1/My_Projects/Combined_Datasets/Combined_Corrected/patches.csv
+        path_root: /data/users4/pafshin1/My_Projects/Combined_Datasets/Combined_Corrected
+        mode: train
+        val_split: 0.1
+        image_resize: 256
+        augment_horizontal_flip: true
+        augment_vertical_flip: true
+        p_uncond: 0.1
+        seed: 42
+    validation:
+      target: ldm.data.hybrid_cond.tumor_til.CancerDataset2D_Batch_combined
+      params:
+        csv_file: /data/users4/pafshin1/My_Projects/Combined_Datasets/Combined_Corrected/patches.csv
+        path_root: /data/users4/pafshin1/My_Projects/Combined_Datasets/Combined_Corrected
+        mode: val
+        val_split: 0.1
+        image_resize: 256
+        augment_horizontal_flip: false
+        augment_vertical_flip: false
+        p_uncond: 0.1
+        seed: 42
+        
+        
+        
+lightning:
+  callbacks:
+    image_logger:
+      target: main.ImageLogger
+      params:
+        batch_frequency: 500
+        max_images: 8
+        increase_log_steps: False
+        log_images_kwargs:
+          quantize_denoised: False
+          inpaint: False
+    model_checkpoint:
+      target: pytorch_lightning.callbacks.ModelCheckpoint
+      params:
+        save_weights_only: True
+
+  
+  trainer:
+    scale_lr: false
+    benchmark: True
+    gradient_clip_val: 1.0  # Ideal value
+    max_epochs: 20       # Good default
+    # precision: 16 # Add this for stability
+    precision: 32
+    log_every_n_steps: 50
+    enable_progress_bar: true
+    deterministic: false
+    accumulate_grad_batches: 2 
