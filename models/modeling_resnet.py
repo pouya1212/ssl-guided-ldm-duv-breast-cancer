@@ -1,3 +1,4 @@
+# coding=utf-8
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,27 +15,27 @@
 
 # Lint as: python3
 """Bottleneck ResNet v2 with GroupNorm and Weight Standardization."""
-import math
 
 from os.path import join as pjoin
-
-from collections import OrderedDict  # pylint: disable=g-importing-member
+from collections import OrderedDict
 
 import torch
-import torch.nn as nn
+from torch import nn
 import torch.nn.functional as F
 
 
 def np2th(weights, conv=False):
-    """Possibly convert HWIO to OIHW."""
+    """Possibly convert HWIO to OIHW and convert to torch tensor."""
     if conv:
         weights = weights.transpose([3, 2, 0, 1])
     return torch.from_numpy(weights)
 
 
 class StdConv2d(nn.Conv2d):
+    """Conv2d layer with Weight Standardization."""
 
     def forward(self, x):
+        """Forward pass with weight standardization."""
         w = self.weight
         v, m = torch.var_mean(w, dim=[1, 2, 3], keepdim=True, unbiased=False)
         w = (w - m) / torch.sqrt(v + 1e-5)
@@ -43,11 +44,13 @@ class StdConv2d(nn.Conv2d):
 
 
 def conv3x3(cin, cout, stride=1, groups=1, bias=False):
+    """3x3 convolution with Weight Standardization."""
     return StdConv2d(cin, cout, kernel_size=3, stride=stride,
                      padding=1, bias=bias, groups=groups)
 
 
 def conv1x1(cin, cout, stride=1, bias=False):
+    """1x1 convolution with Weight Standardization."""
     return StdConv2d(cin, cout, kernel_size=1, stride=stride,
                      padding=0, bias=bias)
 
@@ -57,25 +60,26 @@ class PreActBottleneck(nn.Module):
     """
 
     def __init__(self, cin, cout=None, cmid=None, stride=1):
+        """Initialize the Pre-activation Bottleneck block."""
         super().__init__()
         cout = cout or cin
-        cmid = cmid or cout//4
+        cmid = cmid or cout // 4
 
         self.gn1 = nn.GroupNorm(32, cmid, eps=1e-6)
         self.conv1 = conv1x1(cin, cmid, bias=False)
         self.gn2 = nn.GroupNorm(32, cmid, eps=1e-6)
-        self.conv2 = conv3x3(cmid, cmid, stride, bias=False)  # Original code has it on conv1!!
+        self.conv2 = conv3x3(cmid, cmid, stride, bias=False)
         self.gn3 = nn.GroupNorm(32, cout, eps=1e-6)
         self.conv3 = conv1x1(cmid, cout, bias=False)
         self.relu = nn.ReLU(inplace=True)
 
-        if (stride != 1 or cin != cout):
+        if stride != 1 or cin != cout:
             # Projection also with pre-activation according to paper.
             self.downsample = conv1x1(cin, cout, stride, bias=False)
             self.gn_proj = nn.GroupNorm(cout, cout)
 
     def forward(self, x):
-
+        """Forward pass for the bottleneck block."""
         # Residual branch
         residual = x
         if hasattr(self, 'downsample'):
@@ -91,6 +95,8 @@ class PreActBottleneck(nn.Module):
         return y
 
     def load_from(self, weights, n_block, n_unit):
+        """Load weights from a numpy dictionary."""
+        # pylint: disable=too-many-locals
         conv1_weight = np2th(weights[pjoin(n_block, n_unit, "conv1/kernel")], conv=True)
         conv2_weight = np2th(weights[pjoin(n_block, n_unit, "conv2/kernel")], conv=True)
         conv3_weight = np2th(weights[pjoin(n_block, n_unit, "conv3/kernel")], conv=True)
@@ -126,16 +132,16 @@ class PreActBottleneck(nn.Module):
             self.gn_proj.weight.copy_(proj_gn_weight.view(-1))
             self.gn_proj.bias.copy_(proj_gn_bias.view(-1))
 
+
 class ResNetV2(nn.Module):
     """Implementation of Pre-activation (v2) ResNet mode."""
 
     def __init__(self, block_units, width_factor):
+        """Initialize the ResNetV2 model."""
         super().__init__()
         width = int(64 * width_factor)
         self.width = width
 
-        # The following will be unreadable if we split lines.
-        # pylint: disable=line-too-long
         self.root = nn.Sequential(OrderedDict([
             ('conv', StdConv2d(3, width, kernel_size=7, stride=2, bias=False, padding=3)),
             ('gn', nn.GroupNorm(32, width, eps=1e-6)),
@@ -146,19 +152,23 @@ class ResNetV2(nn.Module):
         self.body = nn.Sequential(OrderedDict([
             ('block1', nn.Sequential(OrderedDict(
                 [('unit1', PreActBottleneck(cin=width, cout=width*4, cmid=width))] +
-                [(f'unit{i:d}', PreActBottleneck(cin=width*4, cout=width*4, cmid=width)) for i in range(2, block_units[0] + 1)],
-                ))),
+                [(f'unit{i:d}', PreActBottleneck(cin=width*4, cout=width*4, cmid=width))
+                 for i in range(2, block_units[0] + 1)],
+            ))),
             ('block2', nn.Sequential(OrderedDict(
                 [('unit1', PreActBottleneck(cin=width*4, cout=width*8, cmid=width*2, stride=2))] +
-                [(f'unit{i:d}', PreActBottleneck(cin=width*8, cout=width*8, cmid=width*2)) for i in range(2, block_units[1] + 1)],
-                ))),    
+                [(f'unit{i:d}', PreActBottleneck(cin=width*8, cout=width*8, cmid=width*2))
+                 for i in range(2, block_units[1] + 1)],
+            ))),
             ('block3', nn.Sequential(OrderedDict(
                 [('unit1', PreActBottleneck(cin=width*8, cout=width*16, cmid=width*4, stride=2))] +
-                [(f'unit{i:d}', PreActBottleneck(cin=width*16, cout=width*16, cmid=width*4)) for i in range(2, block_units[2] + 1)],
-                ))),
+                [(f'unit{i:d}', PreActBottleneck(cin=width*16, cout=width*16, cmid=width*4))
+                 for i in range(2, block_units[2] + 1)],
+            ))),
         ]))
 
     def forward(self, x):
+        """Forward pass for the ResNetV2 model."""
         x = self.root(x)
         x = self.body(x)
         return x
