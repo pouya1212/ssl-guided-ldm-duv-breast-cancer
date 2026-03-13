@@ -51,7 +51,7 @@ The SSL embeddings and synthetic patch generation were obtained by following the
    After finetuning, use the teacher network to **extract embeddings for each patch**.
 
 2. **Latent Diffusion Model (LDM) Pretraining**  
-   Follow the official instructions from the LDM repository [CompVis/latent-diffusion][https://github.com/CompVis/latent-diffusion]to obtain **pretrained models** and guidance for training and evaluating the LDM and VAE.
+   Follow the official instructions from the LDM repository [https://github.com/CompVis/latent-diffusion]to obtain **pretrained models** and guidance for training and evaluating the LDM and VAE.
 
 3. **Variational Autoencoder (VAE)**  
    Use the recommended VAE from [cvlab-stonybrook/PathLDM](https://github.com/cvlab-stonybrook/PathLDM) to encode the patch representations.
