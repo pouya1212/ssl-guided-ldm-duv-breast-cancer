@@ -47,7 +47,7 @@ Based on the results, the synthetic patches **capture realistic fine-grained mor
 The SSL embeddings and synthetic patch generation were obtained by following these steps:
 
 1. **Self-Supervised Feature Extraction with DINO**  
-   Finetune the dataset using the **DINO framework** from [facebookresearch/dino](https://github.com/facebookresearch/dino) with the parameters described in the paper.  
+   Fine-tune the dataset using the **DINO framework** from [facebookresearch/dino](https://github.com/facebookresearch/dino) with the parameters described in the paper.  
    After finetuning, use the teacher network to **extract embeddings for each patch**.
 
 2. **Latent Diffusion Model (LDM) Pretraining**  
@@ -76,8 +76,11 @@ pip install -r requirements.txt
 
 ## Dataset
 
-The dataset includes **142 DUV WSIs** (58 benign, 84 malignant) collected from the **Medical College of Wisconsin**.  
+The dataset includes **142 DUV WSIs** (58 benign, 84 malignant) collected from the **Medical College of Wisconsin**. 
+![Real vs Synthetic Patches](figures/WSIs.png)
+
 A total of **172,984 non-overlapping 400×400 patches** were extracted:
+![Real vs Synthetic Patches](figures/Patchess.png)
 
 - 48,619 malignant patches  
 - 124,365 benign patches  
@@ -92,7 +95,7 @@ The Vision Transformer (ViT) implementation used in this repository is adapted f
 
 https://github.com/jeonsworld/ViT-pytorch
 
-The original implementation was modified to support loading pretrained models trained on large-scale public datasets and integrated into our training pipeline for DUV-FSM breast cancer classification.
+The original implementation was modified to support loading pretrained models trained on large-scale public datasets and to integrate them into our training pipeline for DUV-FSM breast cancer classification.
 ---
 ## Citation
 
