@@ -60,7 +60,7 @@ The SSL embeddings and synthetic patch generation were obtained by following the
    Use the recommended VAE from [cvlab-stonybrook/PathLDM](https://github.com/cvlab-stonybrook/PathLDM) to encode the patch representations.
 
 4. **Training and Synthetic Patch Generation**  
-   Follow [cvlab-stonybrook/Large-Image-Diffusion](https://github.com/cvlab-stonybrook/Large-Image-Diffusion) for using the embeddings to train the LDM and generate synthetic DUV patches.
+   Follow [cvlab-stonybrook/Large-Image-Diffusion](https://github.com/cvlab-stonybrook/Large-Image-Diffusion) for using the embeddings to train the LDM and generate synthetic DUV patches. configs can be found here configs/LDM_vq_4.yaml
 
 
 
