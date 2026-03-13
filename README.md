@@ -89,8 +89,8 @@ A total of **172,984 non-overlapping 400×400 patches** were extracted:
 
 Patch labels were obtained from pathologist annotations.
 
-Note:  Researchers interested in accessing the dataset may contact the Medical College of Wisconsin  and Marquette University for potential collaboration or data sharing.
----
+> **Note:** Researchers interested in accessing the dataset may contact the Medical College of Wisconsin and Marquette University for potential collaboration or data sharing.
+> ---
 ## Acknowledgements
 
 The Vision Transformer (ViT) implementation used in this repository is adapted from the following open-source project:
