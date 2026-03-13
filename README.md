@@ -53,12 +53,12 @@ Install required dependencies:
 
 pip install -r requirements.txt
 
-
+---
 ## Dataset
 Due to patient privacy and medical data regulations, the DUV-FSM dataset used in this work cannot be publicly released.
 
 Researchers interested in the dataset may contact the Medical College of Wisconsin for potential access.
-
+---
 ##Acknowledgements
 
 The Vision Transformer (ViT) implementation used in this repository is adapted from the following open-source project:
@@ -66,7 +66,7 @@ The Vision Transformer (ViT) implementation used in this repository is adapted f
 https://github.com/jeonsworld/ViT-pytorch
 
 The original implementation was modified to support loading pretrained models trained on large-scale public datasets and integrated into our training pipeline for DUV-FSM breast cancer classification.
-
+---
 ##Citation
 
 If you find this work useful, please cite:
