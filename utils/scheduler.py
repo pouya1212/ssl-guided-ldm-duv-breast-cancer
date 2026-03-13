@@ -61,8 +61,8 @@ class WarmupCosineSchedule(LambdaLR):
     """ Linear warmup and then cosine decay.
         Linearly increases learning rate from 0 to 1 over `warmup_steps` training steps.
         Decreases learning rate from 1. to 0. following a cosine curve.
-        If `cycles` is different from 0.5, LR follows cosine function after warmup.
     """
+    # pylint: disable=too-many-arguments
     def __init__(self, optimizer, warmup_steps, t_total, *, cycles=0.5, last_epoch=-1):
         """ Initialize the warmup cosine schedule. """
         self.warmup_steps = warmup_steps
@@ -75,5 +75,6 @@ class WarmupCosineSchedule(LambdaLR):
         if step < self.warmup_steps:
             return float(step) / float(max(1.0, self.warmup_steps))
         # progress after warmup
-        progress = float(step - self.warmup_steps) / float(max(1, self.t_total - self.warmup_steps))
+        denominator = float(max(1, self.t_total - self.warmup_steps))
+        progress = float(step - self.warmup_steps) / denominator
         return max(0.0, 0.5 * (1. + math.cos(math.pi * float(self.cycles) * 2.0 * progress)))
