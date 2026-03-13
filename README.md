@@ -23,7 +23,7 @@ The generated synthetic data improves Vision Transformer (ViT) classification pe
 
 ## Method Overview
 
-![Pipeline](figures/pipeline.png)
+![Pipeline](system-model.png)
 
 Pipeline:
 
