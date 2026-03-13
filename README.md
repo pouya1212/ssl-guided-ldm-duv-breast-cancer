@@ -39,29 +39,10 @@ Pipeline:
 6. Aggregate patch predictions to classify the test DUV WSI 
 ---
 
-Requirements
 
-Python 3.9+
 
-PyTorch
 
-Torchvision
-
-NumPy
-
-Scikit-learn
-
-Pandas
-
-Matplotlib
-
-Seaborn
-
-tqdm
-
-Pillow
-
-Installation
+##Installation & Requirements
 
 Clone the repository:
 
