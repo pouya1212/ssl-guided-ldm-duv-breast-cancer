@@ -17,3 +17,11 @@ def setup(args):
     num_params = count_parameters(model)
     logger.info("Total Parameter: \t%2.1fM" % num_params)
     return args, model
+
+
+def save_model(args, model, fold):
+    """ Save the model checkpoint """
+    model_to_save = model.module if hasattr(model, 'module') else model
+    model_checkpoint = os.path.join(args.output_dir, f"{args.name}_fold{fold}_checkpoint_with_weight.bin")
+    torch.save(model_to_save.state_dict(), model_checkpoint)
+    logger.info("Saved model checkpoint to [DIR: %s]", model_checkpoint)
