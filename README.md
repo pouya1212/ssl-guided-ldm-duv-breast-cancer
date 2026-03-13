@@ -42,7 +42,7 @@ Pipeline:
 
 
 
-##Installation & Requirements
+## Installation & Requirements
 
 Clone the repository:
 
@@ -59,7 +59,7 @@ Due to patient privacy and medical data regulations, the DUV-FSM dataset used in
 
 Researchers interested in the dataset may contact the Medical College of Wisconsin for potential access.
 ---
-##Acknowledgements
+## Acknowledgements
 
 The Vision Transformer (ViT) implementation used in this repository is adapted from the following open-source project:
 
@@ -67,7 +67,7 @@ https://github.com/jeonsworld/ViT-pytorch
 
 The original implementation was modified to support loading pretrained models trained on large-scale public datasets and integrated into our training pipeline for DUV-FSM breast cancer classification.
 ---
-##Citation
+## Citation
 
 If you find this work useful, please cite:
 
