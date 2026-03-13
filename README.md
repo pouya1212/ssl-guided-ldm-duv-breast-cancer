@@ -3,6 +3,7 @@
 Official implementation of the paper:
 
 **"Self-Learned Representation-Guided Latent Diffusion Model for Breast Cancer Classification in Deep Ultraviolet Whole Surface Images"**
+> **Conference Acceptance:** This paper has been accepted for the **IEEE International Symposium on Biomedical Imaging (ISBI) 2026 (https://biomedicalimaging.org/2026/)**, London, UK, and will be presented in the corresponding session.
 
 📄 Paper: [Link to Paper](https://www.researchgate.net/publication/399875627_Self-learned_representation-guided_latent_diffusion_model_for_breast_cancer_classification_in_deep_ultraviolet_whole_surface_images)
 
@@ -31,7 +32,7 @@ To address this, we propose a **Self-Supervised Learning (SSL)-guided Latent Dif
 
 Experiments using 5-fold cross-validation demonstrate that our method achieves **96.47% accuracy** and reduces the **FID score to 45.72**, significantly outperforming class-conditioned baselines.
 
-> **Conference Acceptance:** This paper has been accepted for the **IEEE International Symposium on Biomedical Imaging (ISBI) 2026 (https://biomedicalimaging.org/2026/)**, London, UK, and will be presented in the corresponding session.
+
 ---
 
 ## Method Overview
