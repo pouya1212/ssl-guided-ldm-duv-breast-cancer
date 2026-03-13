@@ -1,7 +1,10 @@
 # Self-Learned Representation-Guided Latent Diffusion Model for Breast Cancer Classification in Deep Ultraviolet Whole Surface Images
 
-Official implementation of our paper on SELF-LEARNED REPRESENTATION-GUIDED LATENT DIFFUSION MODEL FOR BREAST
-CANCER CLASSIFICATION IN DEEP ULTRAVIOLET WHOLE SURFACE IMAGES.
+Official implementation of our paper:
+
+**"Self-Learned Representation-Guided Latent Diffusion Model for Breast Cancer Classification in Deep Ultraviolet Whole Surface Images"**
+
+📄 Paper: [Link to Paper](https://www.researchgate.net/publication/399875627_Self-learned_representation-guided_latent_diffusion_model_for_breast_cancer_classification_in_deep_ultraviolet_whole_surface_images)
 
 ## Authors
 Pouya Afshin, David Helminiak, Tianling Niu, Julie M. Jorns, Tina Yen, Bing Yu, Dong Hye Ye
