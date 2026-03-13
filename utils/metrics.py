@@ -31,8 +31,4 @@ def compute_wsi_metrics(y_true, y_pred):
     f1 = 2 * prec * sens / (prec + sens) if (prec + sens) > 0 else 0
     return acc, sens, spec, prec, f1
 
-def summarize(metric_list, name, method, f):
-    mean = np.mean(metric_list)
-    std = np.std(metric_list)
-    print(f"{method:<18} | {name:<12}: {mean:.4f} ± {std:.4f}")
-    f.write(f"{method:<18} | {name:<12}: {mean:.4f} ± {std:.4f}\n")
+
