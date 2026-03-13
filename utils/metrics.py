@@ -20,3 +20,19 @@ class AverageMeter(object):
 
 def simple_accuracy(preds, labels):
     return (preds == labels).mean() # giving the fraction of correct predictions out of the total predictions.
+
+
+def compute_wsi_metrics(y_true, y_pred):
+    tn, fp, fn, tp = confusion_matrix(y_true, y_pred, labels=[0, 1]).ravel()
+    acc = (y_true == y_pred).mean()
+    sens = tp / (tp + fn) if (tp + fn) > 0 else 0
+    spec = tn / (tn + fp) if (tn + fp) > 0 else 0
+    prec = tp / (tp + fp) if (tp + fp) > 0 else 0
+    f1 = 2 * prec * sens / (prec + sens) if (prec + sens) > 0 else 0
+    return acc, sens, spec, prec, f1
+
+def summarize(metric_list, name, method, f):
+    mean = np.mean(metric_list)
+    std = np.std(metric_list)
+    print(f"{method:<18} | {name:<12}: {mean:.4f} ± {std:.4f}")
+    f.write(f"{method:<18} | {name:<12}: {mean:.4f} ± {std:.4f}\n")
