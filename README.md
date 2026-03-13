@@ -21,7 +21,7 @@ To address this, we propose a **Self-Supervised Learning (SSL)-guided Latent Dif
 
 Experiments using 5-fold cross-validation demonstrate that our method achieves **96.47% accuracy** and reduces the **FID score to 45.72**, significantly outperforming class-conditioned baselines.
 
-> **Conference Acceptance:** This paper has been accepted for the **IEEE International Symposium on Biomedical Imaging (ISBI) 2026**, London, UK, and will be presented in the corresponding session.
+> **Conference Acceptance:** This paper has been accepted for the **IEEE International Symposium on Biomedical Imaging (ISBI) 2026 (https://biomedicalimaging.org/2026/)**, London, UK, and will be presented in the corresponding session.
 ---
 
 ## Method Overview
