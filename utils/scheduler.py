@@ -11,6 +11,7 @@ from torch.optim.lr_scheduler import LambdaLR
 logger = logging.getLogger(__name__)
 
 
+# pylint: disable=too-few-public-methods
 class ConstantLRSchedule(LambdaLR):
     """ Constant learning rate schedule.
     """
@@ -62,7 +63,7 @@ class WarmupCosineSchedule(LambdaLR):
         Decreases learning rate from 1. to 0. following a cosine curve.
         If `cycles` is different from 0.5, LR follows cosine function after warmup.
     """
-    def __init__(self, optimizer, warmup_steps, t_total, cycles=.5, last_epoch=-1):
+    def __init__(self, optimizer, warmup_steps, t_total, *, cycles=0.5, last_epoch=-1):
         """ Initialize the warmup cosine schedule. """
         self.warmup_steps = warmup_steps
         self.t_total = t_total
