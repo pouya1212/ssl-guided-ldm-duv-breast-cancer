@@ -1,0 +1,19 @@
+name: duv-breast-cancer
+channels:
+  - pytorch
+  - conda-forge
+dependencies:
+  - python=3.9
+  - pytorch
+  - torchvision
+  - numpy
+  - pandas
+  - scikit-learn
+  - matplotlib
+  - seaborn
+  - tqdm
+  - pillow
+  - tensorboard
+  - pip
+  - pip:
+      - pyfiglet
