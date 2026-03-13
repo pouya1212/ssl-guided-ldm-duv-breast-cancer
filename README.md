@@ -39,10 +39,59 @@ Pipeline:
 6. Aggregate patch predictions to classify the test DUV WSI 
 ---
 
-## Installation
+Requirements
+
+Python 3.9+
+
+PyTorch
+
+Torchvision
+
+NumPy
+
+Scikit-learn
+
+Pandas
+
+Matplotlib
+
+Seaborn
+
+tqdm
+
+Pillow
+
+Installation
 
 Clone the repository:
 
-```bash
 git clone https://github.com/pouya12/ssl-guided-ldm-duv-breast-cancer.git
 cd ssl-guided-ldm-duv-breast-cancer
+
+Install required dependencies:
+
+pip install -r requirements.txt
+
+
+## Dataset
+Due to patient privacy and medical data regulations, the DUV-FSM dataset used in this work cannot be publicly released.
+
+Researchers interested in the dataset may contact the Medical College of Wisconsin for potential access.
+
+##Acknowledgements
+
+The Vision Transformer (ViT) implementation used in this repository is adapted from the following open-source project:
+
+https://github.com/jeonsworld/ViT-pytorch
+
+The original implementation was modified to support loading pretrained models trained on large-scale public datasets and integrated into our training pipeline for DUV-FSM breast cancer classification.
+
+##Citation
+
+If you find this work useful, please cite:
+
+@article{afshin2025sslldm,
+title={Self-Learned Representation-Guided Latent Diffusion Model for Breast Cancer Classification in Deep Ultraviolet Whole Surface Images},
+author={Afshin, Pouya and Helminiak, David and Niu, Tianling and Jorns, Julie and Yen, Tina and Yu, Bing and Ye, Dong Hye},
+year={2025}
+}
