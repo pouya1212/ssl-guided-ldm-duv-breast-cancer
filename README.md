@@ -28,6 +28,8 @@ Affiliations: Georgia State University, Marquette University, Medical College of
 
 ## Overview
 
+![BCS](figures/BCS.png)
+
 Breast-Conserving Surgery (BCS) requires precise intraoperative margin assessment to preserve healthy tissue. Deep Ultraviolet Fluorescence Scanning Microscopy (DUV-FSM) offers rapid, high-resolution surface imaging for this purpose; however, the scarcity of annotated DUV data hinders the training of robust deep learning models.  
 
 To address this, we propose a **Self-Supervised Learning (SSL)-guided Latent Diffusion Model (LDM)** to generate high-quality synthetic training patches. By guiding the LDM with embeddings from a fine-tuned DINO teacher, we inject rich semantic details of cellular structures into the synthetic data. We combine real and synthetic patches to fine-tune a Vision Transformer (ViT) and use patch-prediction aggregation for WSI-level classification.  
