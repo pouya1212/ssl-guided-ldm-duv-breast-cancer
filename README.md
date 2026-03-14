@@ -73,9 +73,12 @@ The SSL embeddings and synthetic patch generation were obtained by following the
 4. **Training and Synthetic Patch Generation**  
    Follow [cvlab-stonybrook/Large-Image-Diffusion](https://github.com/cvlab-stonybrook/Large-Image-Diffusion) for using the embeddings to train the LDM and generate synthetic DUV patches. configs can be found here configs/LDM_vq_4.yaml
 
-5. For running the framework after generation of the synthetic patches simply run:
+5. For running the framework after generation of the synthetic patches, simply run:
 
 python3 main.py --model_type ViT-B_16 --fp16 --fp16_opt_level O2
+
+
+# to generate and visualize the SSL-guided patch synthetic please see the example here: Patch_synthesis.ipynb
 
 
 ## Installation & Requirements
