@@ -15,6 +15,8 @@ In addition, we are sharing earlier versions of Dataset 1 through Hugging Face:
 
 https://huggingface.co/datasets/BLISS-MU/DDSM
 
+to have a better understanding of working with the patch-level framework, please see (https://github.com/pouya1212/DUV-Patch-ViT-BreastCancer)
+
 ## Authors
 
 **Pouya Afshin, David Helminiak, Tianling Niu, Julie M. Jorns, Tina Yen, Bing Yu, Dong Hye Ye**
@@ -71,6 +73,9 @@ The SSL embeddings and synthetic patch generation were obtained by following the
 4. **Training and Synthetic Patch Generation**  
    Follow [cvlab-stonybrook/Large-Image-Diffusion](https://github.com/cvlab-stonybrook/Large-Image-Diffusion) for using the embeddings to train the LDM and generate synthetic DUV patches. configs can be found here configs/LDM_vq_4.yaml
 
+5. For running the framework after generation of the synthetic patches simply run:
+
+python3 main.py --model_type ViT-B_16 --fp16 --fp16_opt_level O2
 
 
 ## Installation & Requirements
