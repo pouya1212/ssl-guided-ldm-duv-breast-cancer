@@ -78,7 +78,7 @@ The SSL embeddings and synthetic patch generation were obtained by following the
 python3 main.py --model_type ViT-B_16 --fp16 --fp16_opt_level O2
 
 
-# to generate and visualize the SSL-guided patch synthetic please see the example here: Patch_synthesis.ipynb
+*to generate and visualize the SSL-guided patch synthetic please see the example here: Patch_synthesis.ipynb
 
 
 ## Installation & Requirements
