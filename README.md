@@ -15,7 +15,7 @@ In addition, we are sharing earlier versions of Dataset 1 through Hugging Face:
 
 https://huggingface.co/datasets/BLISS-MU/DDSM
 
-to have a better understanding of working with the patch-level framework, please see (https://github.com/pouya1212/DUV-Patch-ViT-BreastCancer)
+To have a better understanding of working with the patch-level framework, please see (https://github.com/pouya1212/DUV-Patch-ViT-BreastCancer)
 
 ## Authors
 
@@ -71,13 +71,24 @@ The SSL embeddings and synthetic patch generation were obtained by following the
    Use the recommended VAE from [cvlab-stonybrook/PathLDM](https://github.com/cvlab-stonybrook/PathLDM) to encode the patch representations.
 
 4. **Training and Synthetic Patch Generation**  
-   Follow [cvlab-stonybrook/Large-Image-Diffusion](https://github.com/cvlab-stonybrook/Large-Image-Diffusion) for using the embeddings to train the LDM and generate synthetic DUV patches. configs can be found here configs/LDM_vq_4.yaml
-   Also, an example of class dataset for training LDM can be found here data/tumor_til.py
+   Follow [cvlab-stonybrook/Large-Image-Diffusion](https://github.com/cvlab-stonybrook/Large-Image-Diffusion) for using the embeddings to train the LDM and generate synthetic DUV patches. configs can be found here
 
+```
+ configs/LDM_vq_4.yaml
+
+```
+Also, an example of class dataset for training LDM can be found here:
+
+```
+data/tumor_til.py
+
+```
 6. For running the framework after generation of the synthetic patches, simply run:
 
+```
 python3 main.py --model_type ViT-B_16 --fp16 --fp16_opt_level O2
 
+```
 
 *to generate and visualize the SSL-guided patch synthetic please see the example here: Patch_synthesis.ipynb
 
@@ -86,13 +97,17 @@ python3 main.py --model_type ViT-B_16 --fp16 --fp16_opt_level O2
 
 Clone the repository:
 
+```
 git clone https://github.com/pouya1212/ssl-guided-ldm-duv-breast-cancer
 cd ssl-guided-ldm-duv-breast-cancer
 
+```
 Install required dependencies:
 
+```
 pip install -r requirements.txt
 
+```
 ---
 
 ## Dataset
